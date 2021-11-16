@@ -1,6 +1,3 @@
-// import 'package:flutter/cupertino.dart';
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
 import 'dart:ui';
 
