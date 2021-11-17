@@ -9,6 +9,7 @@ import 'package:login_final/network_utils/api.dart';
 import 'package:login_final/utilities/constants.dart';
 import 'package:login_final/menu/menu_screen.dart';
 import 'package:login_final/splash_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
   String email = "", password = "", id = "";
+  TextEditingController emailController = TextEditingController();
 
   void login() async {
     var data = {'id': id, 'email': email, 'password': password};
@@ -31,8 +33,12 @@ class _LoginScreenState extends State<LoginScreen> {
     if (body['status'] == 1) {
       // ScaffoldMessenger.of(context).showSnackBar(
       //     const SnackBar(content: Text("Login Berhasil"))); //Masuk
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (BuildContext _) => SplashScreen()));
+      final sp = await SharedPreferences.getInstance();
+      sp.setString('email', emailController.text.toString());
+
+      String? emailUser = sp.getString('email');
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext _) => SplashScreen(email: emailUser!)));
     } else {
       var pesanError = "";
       if (body['reason'] != null) {
@@ -62,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: emailController,
             onChanged: (value) => email = value,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.white),

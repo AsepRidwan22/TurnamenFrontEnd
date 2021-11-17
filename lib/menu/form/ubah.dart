@@ -9,6 +9,7 @@ import 'package:login_final/network_utils/api.dart';
 import 'package:login_final/utilities/constants.dart';
 import 'package:login_final/menu/menu_screen.dart';
 import 'package:login_final/splash_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UbahScreen extends StatefulWidget {
   final String dataEdit;
@@ -59,8 +60,12 @@ class _UbahScreenState extends State<UbahScreen> {
     if (body['status'] == 1) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Update Berhasil")));
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (BuildContext _) => SplashScreen()));
+      final sp = await SharedPreferences.getInstance();
+      String? emailUser = sp.getString('email');
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext _) => SplashScreen(
+                email: emailUser!,
+              )));
     } else {
       var pesanError = "";
       if (body['reason'] != null) {

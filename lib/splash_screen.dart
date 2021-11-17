@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:login_final/menu/menu_screen.dart';
+import 'package:login_final/screens/login_screen.dart';
 import 'package:login_final/utilities/constants.dart';
 
 class SplashScreen extends StatefulWidget {
+  final String email;
+  const SplashScreen({Key? key, required this.email}) : super(key: key);
   @override
   State<StatefulWidget> createState() => StartState();
 }
@@ -28,7 +31,12 @@ class StartState extends State<SplashScreen> {
 
   route() {
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => MenuScreen()));
+        context,
+        MaterialPageRoute(
+          builder: (context) => widget.email == ""
+              ? const LoginScreen()
+              : MenuScreen(dataEmail: widget.email),
+        ));
   }
 
   initScreen(BuildContext context) {
