@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:login_final/network_utils/api.dart';
 import 'package:login_final/utilities/constants.dart';
+import 'package:login_final/screens/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -31,6 +32,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (body['status'] == 1) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Register Berhasil")));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext _) => LoginScreen()));
     } else {
       var pesanError = "";
       if (body['reason'] != null) {

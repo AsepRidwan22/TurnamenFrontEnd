@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:login_final/screens/login_screen.dart';
 import 'package:login_final/register/register_screen.dart';
 import 'package:login_final/menu/menu_screen.dart';
+import 'package:login_final/splash_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,10 +16,10 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (BuildContext _) => LoginScreen(),
         '/register': (BuildContext _) => RegisterScreen(),
-        '/menu': (BuildContext _) => MenuScreen(),
+        '/menu': (BuildContext _) => SplashScreen(),
       },
       // home: LoginScreen(),
-      initialRoute: '/menu',
+      initialRoute: '/',
     );
   }
 }

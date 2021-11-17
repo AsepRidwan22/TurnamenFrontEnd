@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:login_final/network_utils/api.dart';
 import 'package:login_final/utilities/constants.dart';
 import 'package:login_final/menu/menu_screen.dart';
+import 'package:login_final/splash_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // ScaffoldMessenger.of(context).showSnackBar(
       //     const SnackBar(content: Text("Login Berhasil"))); //Masuk
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (BuildContext _) => MenuScreen()));
+          .push(MaterialPageRoute(builder: (BuildContext _) => SplashScreen()));
     } else {
       var pesanError = "";
       if (body['reason'] != null) {

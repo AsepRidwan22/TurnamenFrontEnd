@@ -8,11 +8,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:login_final/network_utils/api.dart';
+import 'package:login_final/splash_screen.dart';
 import 'package:login_final/utilities/constants.dart';
-// import 'package:login_final/menu/model_user.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:login_final/menu/controller_user.dart';
-// import 'package:login_final/menu/model_user.dart';
 import 'package:login_final/screens/login_screen.dart';
 import 'package:login_final/menu/form/ubah.dart';
 
@@ -45,6 +42,16 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     getData();
+  }
+
+  void delete(id) async {
+    var res = await Network().deleteData('/delete/' + id.toString());
+    var body = json.decode(res.body);
+    print(id);
+    if (body['status'] != null) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext _) => SplashScreen()));
+    }
   }
 
   @override
@@ -110,7 +117,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                       "Hapus",
                                       style: TextStyle(color: Colors.red),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () => delete(data[index]['id']),
                                   ),
                                   SizedBox(
                                     width: 8,

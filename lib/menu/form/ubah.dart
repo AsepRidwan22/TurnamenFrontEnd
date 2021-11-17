@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:login_final/network_utils/api.dart';
 import 'package:login_final/utilities/constants.dart';
 import 'package:login_final/menu/menu_screen.dart';
+import 'package:login_final/splash_screen.dart';
 
 class UbahScreen extends StatefulWidget {
   final String dataEdit;
@@ -59,7 +60,7 @@ class _UbahScreenState extends State<UbahScreen> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Update Berhasil")));
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (BuildContext _) => MenuScreen()));
+          .push(MaterialPageRoute(builder: (BuildContext _) => SplashScreen()));
     } else {
       var pesanError = "";
       if (body['reason'] != null) {

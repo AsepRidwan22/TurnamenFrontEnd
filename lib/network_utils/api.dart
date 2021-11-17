@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Network {
-  final String _url = 'http://192.168.100.36:7777/api';
+  final String _url = 'http://192.168.43.16:7777/api';
   // 'http://localhost:7777/api/';
 
   authData(data, apiUrl) async {
@@ -17,6 +17,11 @@ class Network {
   getData(apiUrl) async {
     var fullUrl = _url + apiUrl;
     return await http.get(Uri.parse(fullUrl), headers: _setHeaders());
+  }
+
+  deleteData(apiUrl) async {
+    var fullUrl = _url + apiUrl;
+    return await http.delete(Uri.parse(fullUrl), headers: _setHeaders());
   }
 
   _setHeaders() => {
