@@ -7,6 +7,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:login_final/network_utils/api.dart';
 import 'package:login_final/utilities/constants.dart';
+import 'package:login_final/menu/menu_screen.dart';
 
 class UbahScreen extends StatefulWidget {
   final String dataEdit;
@@ -17,8 +18,9 @@ class UbahScreen extends StatefulWidget {
 }
 
 class _UbahScreenState extends State<UbahScreen> {
-  late Map<String, dynamic> dataNew;
+  int id = 0;
   String email = "", password = "", role = "", name = "", image = "";
+  late Map<String, dynamic> dataNew;
   final _controllerEmail = TextEditingController();
   final _controllerName = TextEditingController();
   final _controllerRole = TextEditingController();
@@ -28,6 +30,7 @@ class _UbahScreenState extends State<UbahScreen> {
   void initState() {
     super.initState();
     dataNew = json.decode(widget.dataEdit);
+    id = dataNew['id'] ?? 0;
     email = dataNew['email'] ?? "";
     name = dataNew['name'] ?? "";
     role = dataNew['role'] ?? "";
@@ -37,6 +40,37 @@ class _UbahScreenState extends State<UbahScreen> {
     _controllerName.text = dataNew['name'] ?? "";
     _controllerRole.text = dataNew['role'] ?? "";
     _controllerImage.text = dataNew['image'] ?? "";
+  }
+
+  void update() async {
+    var data = {
+      'email': email,
+      'pasword': password,
+      'role': role,
+      'name': name,
+      'image': image
+    };
+
+    var res = await Network().authData(data, '/update/' + id.toString());
+    var body = json.decode(res.body);
+
+    print(body);
+    if (body['status'] == 1) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Update Berhasil")));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext _) => MenuScreen()));
+    } else {
+      var pesanError = "";
+      if (body['reason'] != null) {
+        pesanError = body['reason'];
+      } else {
+        pesanError = "Gagal Update";
+      }
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(pesanError)));
+    }
   }
 
   Widget _buildEmailTF() {
@@ -206,19 +240,19 @@ class _UbahScreenState extends State<UbahScreen> {
     );
   }
 
-  Widget _buildRegisterBtn() {
+  Widget _buildUpdateBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => null,
+        onPressed: () => update(),
         padding: EdgeInsets.all(15.0),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         color: Colors.white,
         child: Text(
-          'REGISTER',
+          'Update',
           style: TextStyle(
               color: Color(0xFF527DAA),
               letterSpacing: 1.5,
@@ -294,7 +328,7 @@ class _UbahScreenState extends State<UbahScreen> {
                   SizedBox(
                     height: 20.0,
                   ),
-                  _buildRegisterBtn()
+                  _buildUpdateBtn()
                 ],
               ),
             ),

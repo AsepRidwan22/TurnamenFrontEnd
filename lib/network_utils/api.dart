@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Network {
-  final String _url = 'http://192.168.100.91:7777/api';
+  final String _url = 'http://192.168.100.36:7777/api';
   // 'http://localhost:7777/api/';
 
   authData(data, apiUrl) async {
