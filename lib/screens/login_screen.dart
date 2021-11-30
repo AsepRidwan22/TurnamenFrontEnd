@@ -21,6 +21,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
   String email = "", password = "", id = "";
+  bool _isobscure = true;
+  bool _isChecked = false;
   TextEditingController emailController = TextEditingController();
 
   void login() async {
@@ -102,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 60.0,
           child: TextField(
             onChanged: (value) => password = value,
-            obscureText: true,
+            obscureText: _isobscure,
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -110,7 +112,19 @@ class _LoginScreenState extends State<LoginScreen> {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.lock, color: Colors.white),
+              prefixIcon: Icon(
+                Icons.lock,
+                color: Colors.white,
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(_isobscure ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.white),
+                onPressed: () {
+                  setState(() {
+                    _isobscure = !_isobscure;
+                  });
+                },
+              ),
               hintText: 'Enter Your Password',
               hintStyle: kHintTextStyle,
             ),

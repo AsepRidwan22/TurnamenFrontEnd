@@ -25,6 +25,26 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   List data = List.empty();
 
+  Future logout() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final sp = await _prefs;
+    sp.remove('email');
+    // Fluttertoast.showToast(
+    //     msg: "BERHASIL LOGOUT",
+    //     toastLength: Toast.LENGTH_SHORT,
+    //     gravity: ToastGravity.BOTTOM,
+    //     timeInSecForIosWeb: 1,
+    //     backgroundColor: Colors.green,
+    //     textColor: Colors.white,
+    //     fontSize: 16.0);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text("Logout Berhasil")));
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext _) => LoginScreen()));
+  }
+
   Future<String> getData() async {
     var res = await Network().getData('/showall');
     var body = json.decode(res.body);
@@ -70,29 +90,38 @@ class _MenuScreenState extends State<MenuScreen> {
             children: <Widget>[
               UserAccountsDrawerHeader(
                 accountName: Text('Asep Ridwan'),
-                accountEmail: Text('aszeprydzone@gmail.com'),
+                accountEmail: Text(widget.dataEmail),
                 currentAccountPicture: Row(
                   children: <Widget>[
                     Container(
-                      width: 100.0,
-                      height: 150.0,
+                      width: 70.0,
+                      height: 70.0,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        color: Colors.redAccent,
-                      ),
-                      child: Image.network(
-                        'https://scontent.fbdo5-1.fna.fbcdn.net/v/t1.6435-9/118659688_2541284479490751_9204819832067911218_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=09cbfe&_nc_eui2=AeFg-a55VsEU20aSk0hkwDdtII4JEohV6nsgjgkSiFXqew0QwSm3sJCGrAwd3z9hQG6YfyPkOGwbAWsMY_CGpK-u&_nc_ohc=1DqFHIM-dvwAX_PITib&_nc_oc=AQnGGIjbhuNYY5yX901qfmI7RO4vaBIl8thJu4HGvFOLOxWmBKKrXiyb1lFvETh-u60&_nc_ht=scontent.fbdo5-1.fna&oh=5fd5bcee8b3c720388e2a9c1aa5012d1&oe=61BA3629',
-                        height: 15.0,
-                        width: 10.0,
-                      ),
+                          shape: BoxShape.rectangle,
+                          border: Border.all(
+                              color: Colors.teal,
+                              width: 4.0,
+                              style: BorderStyle.solid),
+                          image: new DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                  'https://scontent.fbdo5-1.fna.fbcdn.net/v/t1.6435-9/118659688_2541284479490751_9204819832067911218_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=09cbfe&_nc_eui2=AeFg-a55VsEU20aSk0hkwDdtII4JEohV6nsgjgkSiFXqew0QwSm3sJCGrAwd3z9hQG6YfyPkOGwbAWsMY_CGpK-u&_nc_ohc=joifg9q4UfAAX9HCArg&_nc_oc=AQkPdVQ-JvG_QjvWl1ODgQukNbwYwe9YmmUMgVsrc8d0a7azafbnWE15dBJJOeFv8jo&_nc_ht=scontent.fbdo5-1.fna&oh=c13f3669794b50950bc213d364f8c480&oe=61C21F29'))),
                     ),
                   ],
                 ),
-                decoration: BoxDecoration(color: Colors.blueAccent),
+                decoration: kBoxDecorationStyle,
               ),
               ListTile(
+                leading: Icon(Icons.logout),
+                title: Text('LOGOUT'),
+                onTap: () => logout(),
+              ),
+              // Divider(
+              //   height: 2.0,
+              // ),
+              ListTile(
                 leading: Icon(Icons.account_circle),
-                title: Text('Item 1'),
+                title: Text('Item '),
                 onTap: () {
                   // This line code will close drawer programatically....
                   Navigator.pop(context);
@@ -104,7 +133,12 @@ class _MenuScreenState extends State<MenuScreen> {
             ],
           )),
       appBar: AppBar(
-        title: Text(widget.dataEmail),
+        title: Text(
+          'HOME',
+          textAlign: TextAlign.center,
+          // style: TextStyle(color: Colors.black87),
+        ),
+        // backgroundColor: Colors.white,
       ),
       body: ListView.builder(
           itemCount: data.isEmpty ? 0 : data.length,
